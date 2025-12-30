@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Carga de Usuarios";
+}
+
+<h2>Carga de usuarios desde TXT</h2>
+
+<p>
+    Este proceso lee el archivo <strong>usuarios.txt</strong>,
+    envía los datos a <strong>RabbitMQ</strong> y los guarda en la
+    <strong>Base de Datos</strong>.
+</p>
+
+<form method="get" asp-controller="Rabbit" asp-action="Index">
+    <button type="submit" class="btn btn-primary">
+        Enviar datos a RabbitMQ
+    </button>
+</form>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div style="margin-top:20px; color:green;">
+        <strong>@ViewBag.Mensaje</strong>
+    </div>
+}
