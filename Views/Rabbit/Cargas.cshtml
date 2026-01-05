@@ -1,0 +1,50 @@
+﻿@model List<Rabbit.Models.CargaArchivo>
+
+<h2>Historial de Cargas</h2>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Archivo</th>
+            <th>Total</th>
+            <th>Exitosos</th>
+            <th>Error</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.NombreArchivo</td>
+                    <td>@c.TotalRegistros</td>
+                    <td>@c.RegistrosExitosos</td>
+                    <td>@c.RegistrosError</td>
+                    <td>@c.Estado</td>
+                    <td>@c.FechaCarga</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">No hay cargas registradas</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<a asp-action="Index" class="btn btn-secondary">
+    ⬅ Volver
+</a>
+
+<script>
+    setTimeout(() => {
+        location.reload();
+    }, 5000);
+</script>
+

@@ -1,38 +1,41 @@
-﻿using System.Text;
+﻿using RabbitMQ.Client;
+using System.Text;
 using System.Text.Json;
 using Rabbit.Models;
-using RabbitMQ.Client;
 
 namespace Rabbit.Services
 {
     public class RabbitProducer
     {
-        public void Enviar(RabbitModel usuario)
+        public void Enviar(RabbitMessage mensaje)
         {
-            ConnectionFactory factory = new ConnectionFactory();
-            factory.HostName = "localhost";
+            var factory = new ConnectionFactory { HostName = "localhost" };
 
-            IConnection connection = factory.CreateConnection();
-            IModel channel = connection.CreateModel();
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
 
             channel.QueueDeclare(
-                "cola_usuarios",
-                false,
-                false,
-                false,
-                null);
+                queue: "cola_usuarios",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
-            string mensaje = JsonSerializer.Serialize(usuario);
-
-            ReadOnlyMemory<byte> body =
-                new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(mensaje));
+            var body = Encoding.UTF8.GetBytes(
+                JsonSerializer.Serialize(mensaje));
 
             channel.BasicPublish(
                 exchange: "",
                 routingKey: "cola_usuarios",
-                mandatory: false,
                 basicProperties: null,
                 body: body);
         }
+    }
+
+    public class RabbitMessage
+    {
+        public long Id { get; set; }
+        public required string Nombre { get; set; }
+        public int IdCarga { get; set; }
     }
 }

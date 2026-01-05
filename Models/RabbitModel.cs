@@ -4,6 +4,7 @@ namespace Rabbit.Models
     {
         public long Id { get; set; }
         public required string Nombre { get; set; }
+        public int IdCarga { get; set; }
     }
 }
 

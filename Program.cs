@@ -1,6 +1,11 @@
+using Rabbit.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHostedService<Rabbit.Services.RabbitConsumer>();
+
 
 var app = builder.Build();
 

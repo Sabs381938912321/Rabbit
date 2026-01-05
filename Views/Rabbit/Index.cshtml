@@ -6,7 +6,6 @@
 
 <form asp-action="EnviarArchivo" method="post" enctype="multipart/form-data">
     <div style="margin-bottom: 20px;">
-        <label>Seleccionar archivo:</label>
         <input type="file" name="archivo" accept=".txt" required />
     </div>
 
@@ -14,19 +13,20 @@
         <img src="~/img/subir.png" alt="Subir archivo" style="width: 30px; height: 30px;">
     </button>
 
-    @if (ViewBag.Mensaje != null)
+    @if (TempData["Mensaje"] != null)
     {
-        <div style="margin-top:20px; color:green;">
-            <strong>@ViewBag.Mensaje</strong>
+        <div style="color: green; margin-bottom:10px;">
+            @TempData["Mensaje"]
         </div>
     }
+
 </form>
 
 <style>
     .btn-icon {
-        width: 100px;
-        height: 100px;
-        border-radius: 80%;
+        width: 60px;
+        height: 60px;
+        border-radius: 60%;
         padding: 10px;
         display: flex;
         align-items: center;
@@ -40,3 +40,10 @@
             max-height: 50%;
         }
 </style>
+
+<a asp-controller="Rabbit"
+   asp-action="Cargas"
+   class="btn btn-primary">
+   Archivos cargados
+</a>
+

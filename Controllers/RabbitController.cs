@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Rabbit.Models;
+using Rabbit.Services;
 
 namespace Rabbit.Controllers
 {
@@ -13,59 +14,92 @@ namespace Rabbit.Controllers
             _configuration = configuration;
         }
 
-        // Muestra la vista
+        // Vista
         public IActionResult Index()
         {
             return View();
         }
 
-        // Recibe el archivo .txt
+        public IActionResult Cargas()
+        {
+            List<CargaArchivo> cargas = new List<CargaArchivo>();
+
+            string cs = _configuration.GetConnectionString("DefaultConnection");
+
+            using SqlConnection conn = new SqlConnection(cs);
+            conn.Open();
+
+            using SqlCommand cmd = new SqlCommand(
+                "SELECT * FROM CargaArchivos ORDER BY FechaCarga DESC", conn);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                cargas.Add(new CargaArchivo
+                {
+                    IdCarga = (int)reader["IdCarga"],
+                    NombreArchivo = reader["NombreArchivo"].ToString(),
+                    TotalRegistros = reader["TotalRegistros"] as int?,
+                    RegistrosExitosos = reader["RegistrosExitosos"] as int?,
+                    RegistrosError = reader["RegistrosError"] as int?,
+                    Estado = reader["Estado"].ToString(),
+                    FechaCarga = (DateTime)reader["FechaCarga"]
+                });
+            }
+
+            return View(cargas); 
+        }
+
         [HttpPost]
         public IActionResult EnviarArchivo(IFormFile archivo)
         {
             if (archivo == null || archivo.Length == 0)
             {
-                ViewBag.Mensaje = "No se seleccionó ningún archivo.";
+                ViewBag.Mensaje = "Archivo vacÃ­o";
                 return View("Index");
             }
 
             string cs = _configuration.GetConnectionString("DefaultConnection");
-            int lineasProcesadas = 0;
+            int idCarga;
 
+            // Registrar archivo
             using (var conn = new SqlConnection(cs))
             {
                 conn.Open();
+                var cmd = new SqlCommand(@"
+            INSERT INTO CargaArchivos (NombreArchivo, Estado)
+            OUTPUT INSERTED.IdCarga
+            VALUES (@Nombre, 'Procesando')", conn);
 
-                using (var reader = new StreamReader(archivo.OpenReadStream()))
+                cmd.Parameters.AddWithValue("@Nombre", archivo.FileName);
+                idCarga = (int)cmd.ExecuteScalar();
+            }
+
+            var producer = new RabbitProducer();
+
+            using var reader = new StreamReader(archivo.OpenReadStream());
+
+            while (!reader.EndOfStream)
+            {
+                var linea = reader.ReadLine();
+                var partes = linea.Split(',');
+
+                if (partes.Length >= 2 && int.TryParse(partes[0], out int id))
                 {
-                    while (!reader.EndOfStream)
+                    producer.Enviar(new RabbitMessage
                     {
-                        var linea = reader.ReadLine(); // cada línea: "Id,Nombre"
-                        var partes = linea.Split(',');
-
-                        if (partes.Length >= 2)
-                        {
-                            if (int.TryParse(partes[0], out int id))
-                            {
-                                string nombre = partes[1];
-
-                                using var cmd = new SqlCommand(
-                                    "INSERT INTO Usuarios (Id, Nombre) VALUES (@Id, @Nombre)", conn);
-
-                                cmd.Parameters.AddWithValue("@Id", id);
-                                cmd.Parameters.AddWithValue("@Nombre", nombre);
-
-                                cmd.ExecuteNonQuery();
-                                lineasProcesadas++;
-                            }
-                        }
-                    }
+                        IdCarga = idCarga, 
+                        Id = id,
+                        Nombre = partes[1]
+                    });
                 }
             }
 
-            ViewBag.Mensaje = $"{lineasProcesadas} usuarios insertados correctamente desde el archivo.";
+            TempData["Mensaje"] = $"Archivo enviado correctamente. IdCarga: {idCarga}";
+            return RedirectToAction("Index");
 
-            return View("Index");
         }
+
     }
 }
