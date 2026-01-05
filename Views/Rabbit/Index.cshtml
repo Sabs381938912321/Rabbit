@@ -1,49 +1,93 @@
-﻿@{
-    ViewData["Title"] = "Carga de Usuarios";
-}
+﻿<div class="card-cargas">
 
-<h2>Carga de usuarios desde archivo TXT</h2>
+    @{
+        ViewData["Title"] = "Carga de Usuarios";
+    }
 
-<form asp-action="EnviarArchivo" method="post" enctype="multipart/form-data">
-    <div style="margin-bottom: 20px;">
-        <input type="file" name="archivo" accept=".txt" required />
+    <h2>Carga de usuarios desde archivo TXT</h2>
+
+    <form asp-action="EnviarArchivo" method="post" enctype="multipart/form-data">
+
+        <!-- INPUT OCULTO -->
+        <input type="file"
+               id="archivoInput"
+               name="archivo"
+               accept=".txt"
+               required
+               style="display:none;"
+               onchange="mostrarNombre(this)" />
+
+        <!-- BOTÓN CON ÍCONO → SELECCIONAR ARCHIVO -->
+        <div style="margin-bottom: 20px;">
+            <button type="button"
+                    class="btn btn-primary btn-icon"
+                    onclick="document.getElementById('archivoInput').click()"
+                    title="Seleccionar archivo">
+                <img src="~/img/subir.png" alt="Seleccionar archivo" style="width: 30px; height: 30px;">
+            </button>
+
+            <div style="margin-top:10px; color:white;">
+                <span id="nombreArchivo">Ningún archivo seleccionado</span>
+            </div>
+        </div>
+
+        <!-- BOTÓN NORMAL → SUBMIT -->
+        <button type="submit" class="btn btn-success">
+            Subir archivo
+        </button>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div style="color: green; margin-bottom:10px;">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+    </form>
+
+    <script>
+        function mostrarNombre(input) {
+            const nombre = input.files.length > 0
+                ? input.files[0].name
+                : "Ningún archivo seleccionado";
+
+            document.getElementById("nombreArchivo").innerText = nombre;
+        }
+    </script>
+
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div style="color: green; margin-bottom:10px;">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+    <style>
+        .btn-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 60%;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+            .btn-icon img {
+                max-width: 50%;
+                max-height: 50%;
+            }
+    </style>
+
+    <div style="margin-top: 60px; text-align:center;">
+        <a asp-controller="Rabbit"
+           asp-action="Cargas"
+           class="btn btn-primary btn-lg">
+            📂 Archivos cargados
+        </a>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-icon" title="Subir archivo">
-        <img src="~/img/subir.png" alt="Subir archivo" style="width: 30px; height: 30px;">
-    </button>
-
-    @if (TempData["Mensaje"] != null)
-    {
-        <div style="color: green; margin-bottom:10px;">
-            @TempData["Mensaje"]
-        </div>
-    }
-
-</form>
-
-<style>
-    .btn-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 60%;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-        .btn-icon img {
-            max-width: 50%;
-            max-height: 50%;
-        }
-</style>
-
-<a asp-controller="Rabbit"
-   asp-action="Cargas"
-   class="btn btn-primary">
-   Archivos cargados
-</a>
-
+</div>

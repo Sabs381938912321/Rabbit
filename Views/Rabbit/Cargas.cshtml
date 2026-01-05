@@ -1,50 +1,60 @@
 ﻿@model List<Rabbit.Models.CargaArchivo>
 
-<h2>Historial de Cargas</h2>
+<h2 class="titulo">📊 Historial de cargas de archivos</h2>
 
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Archivo</th>
-            <th>Total</th>
-            <th>Exitosos</th>
-            <th>Error</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            foreach (var c in Model)
+<div class="tabla-container">
+
+    <table class="tabla-cargas">
+        <thead>
+            <tr>
+                <th>Archivo</th>
+                <th>Total</th>
+                <th>✔ Exitosos</th>
+                <th>❌ Errores</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@c.NombreArchivo</td>
+                        <td>@c.TotalRegistros</td>
+                        <td class="ok">@c.RegistrosExitosos</td>
+                        <td class="error">@c.RegistrosError</td>
+                        <td>
+                            <span class="estado @c.Estado?.ToLower()">
+                                @c.Estado
+                            </span>
+                        </td>
+                        <td>@c.FechaCarga.ToString("yyyy-MM-dd HH:mm")</td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@c.NombreArchivo</td>
-                    <td>@c.TotalRegistros</td>
-                    <td>@c.RegistrosExitosos</td>
-                    <td>@c.RegistrosError</td>
-                    <td>@c.Estado</td>
-                    <td>@c.FechaCarga</td>
+                    <td colspan="6" class="vacio">
+                        No hay cargas registradas
+                    </td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="6">No hay cargas registradas</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
+</div>
 
-<a asp-action="Index" class="btn btn-secondary">
-    ⬅ Volver
-</a>
+<div class="acciones">
+    <a asp-action="Index" class="btn-volver">
+        ⬅ Volver
+    </a>
+</div>
 
 <script>
     setTimeout(() => {
         location.reload();
     }, 5000);
 </script>
-

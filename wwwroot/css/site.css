@@ -1,5 +1,5 @@
 /* ================================
-   RESET & BASE
+   Index.cdhtml
 ================================ */
 * {
     margin: 0;
@@ -162,3 +162,119 @@ body {
             font-size: 22px;
         }
 }
+
+/* ================================
+   Cargas.cshtml
+================================ */
+
+/* CONTENEDOR PRINCIPAL */
+.card-cargas {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #0f172a;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+}
+
+/* TÍTULO */
+.titulo {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+/* CONTENEDOR TABLA */
+.tabla-container {
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+/* TABLA */
+.tabla-cargas {
+    width: 100%;
+    border-collapse: collapse;
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 14px;
+}
+
+    /* HEADER */
+    .tabla-cargas thead th {
+        background: #1e293b;
+        padding: 14px;
+        text-align: left;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    /* FILAS */
+    .tabla-cargas td {
+        padding: 12px;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    /* HOVER */
+    .tabla-cargas tbody tr:hover {
+        background: #1e293b;
+    }
+
+/* COLUMNAS */
+.ok {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.error {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+/* ESTADOS */
+.estado {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+    .estado.exitoso {
+        background: #16a34a;
+        color: white;
+    }
+
+    .estado.conerrores {
+        background: #f59e0b;
+        color: black;
+    }
+
+    .estado.procesando {
+        background: #2563eb;
+        color: white;
+    }
+
+/* VACÍO */
+.vacio {
+    text-align: center;
+    padding: 30px;
+    color: #94a3b8;
+}
+
+/* ACCIONES */
+.acciones {
+    margin-top: 25px;
+}
+
+.btn-volver {
+    padding: 10px 18px;
+    background: #334155;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+    .btn-volver:hover {
+        background: #475569;
+    }
