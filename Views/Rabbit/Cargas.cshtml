@@ -1,60 +1,63 @@
-﻿@model List<Rabbit.Models.CargaArchivo>
+﻿<div class="card-cargas">
 
-<h2 class="titulo">📊 Historial de cargas de archivos</h2>
+    @model List<Rabbit.Models.CargaArchivo>
 
-<div class="tabla-container">
+    <h2 class="titulo">📊 Historial de cargas de archivos</h2>
 
-    <table class="tabla-cargas">
-        <thead>
-            <tr>
-                <th>Archivo</th>
-                <th>Total</th>
-                <th>✔ Exitosos</th>
-                <th>❌ Errores</th>
-                <th>Estado</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var c in Model)
+    <div class="tabla-container">
+
+        <table class="tabla-cargas">
+            <thead>
+                <tr>
+                    <th>Archivo</th>
+                    <th>Total</th>
+                    <th>✔ Exitosos</th>
+                    <th>❌ Errores</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>@c.NombreArchivo</td>
+                            <td>@c.TotalRegistros</td>
+                            <td class="ok">@c.RegistrosExitosos</td>
+                            <td class="error">@c.RegistrosError</td>
+                            <td>
+                                <span class="estado @c.Estado?.ToLower()">
+                                    @c.Estado
+                                </span>
+                            </td>
+                            <td>@c.FechaCarga.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@c.NombreArchivo</td>
-                        <td>@c.TotalRegistros</td>
-                        <td class="ok">@c.RegistrosExitosos</td>
-                        <td class="error">@c.RegistrosError</td>
-                        <td>
-                            <span class="estado @c.Estado?.ToLower()">
-                                @c.Estado
-                            </span>
+                        <td colspan="6" class="vacio">
+                            No hay cargas registradas
                         </td>
-                        <td>@c.FechaCarga.ToString("yyyy-MM-dd HH:mm")</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="vacio">
-                        No hay cargas registradas
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
+    </div>
+
+    <div class="acciones">
+        <a asp-action="Index" class="btn-volver">
+            ⬅ Volver
+        </a>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            location.reload();
+        }, 5000);
+    </script>
 </div>
-
-<div class="acciones">
-    <a asp-action="Index" class="btn-volver">
-        ⬅ Volver
-    </a>
-</div>
-
-<script>
-    setTimeout(() => {
-        location.reload();
-    }, 5000);
-</script>

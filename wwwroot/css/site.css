@@ -1,167 +1,64 @@
 /* ================================
-   Index.cdhtml
+   Index.cshtml
 ================================ */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #ffffff;
-    min-height: 100vh;
-}
-
-/* ================================
-   LAYOUT
-================================ */
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-/* ================================
-   CARD
-================================ */
-.card {
-    background: rgba(20, 20, 20, 0.92);
-    width: 480px;
-    padding: 40px;
-    border-radius: 18px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ================================
-   TITLES & TEXT
-================================ */
-.card h1 {
-    font-size: 26px;
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
-}
-
-.sub {
-    font-size: 14px;
-    color: #cfcfcf;
-    margin-bottom: 30px;
-    line-height: 1.4;
-}
-
-/* ================================
-   FILE INPUT
-================================ */
-.file-box {
-    margin-bottom: 45px;
-}
-
-.file-label {
-    display: inline-block;
-    background: linear-gradient(135deg, #ffffff, #e6e6e6);
-    color: #000;
-    padding: 12px 22px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: transform .15s ease, box-shadow .15s ease;
-}
-
-    .file-label:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 5px 15px rgba(255,255,255,0.25);
-    }
-
-.file-box input[type="file"] {
-    display: none;
-}
-
-#file-name {
-    display: block;
-    margin-top: 12px;
-    font-size: 13px;
-    color: #b5b5b5;
-}
-
-/* ================================
-   BUTTON
-================================ */
-.btn-upload {
-    width: 100%;
-    padding: 15px;
-    font-size: 17px;
-    font-weight: 600;
+.card-index {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    background: #0f172a;
     border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.4);
+}
+
+.titulo-index {
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.selector-archivo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+    .selector-archivo span {
+        color: #e5e7eb;
+        font-size: 14px;
+    }
+
+.btn-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #2563eb;
     border: none;
     cursor: pointer;
-    color: #ffffff;
-    background: linear-gradient(135deg, #0d6efd, #0a58ca);
-    box-shadow: 0 10px 25px rgba(13, 110, 253, 0.4);
-    transition: transform .15s ease, box-shadow .15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-    .btn-upload:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(13, 110, 253, 0.6);
+    .btn-icon img {
+        width: 28px;
     }
 
-/* ================================
-   ALERTS
-================================ */
-.alert {
-    margin-top: 25px;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 14px;
-    background: linear-gradient(135deg, #198754, #157347);
-    box-shadow: 0 8px 20px rgba(25, 135, 84, 0.5);
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-/* ================================
-   LINKS
-================================ */
-.link {
-    display: block;
-    margin-top: 28px;
-    font-size: 14px;
-    color: #7cb9ff;
-    text-decoration: none;
-}
-
-    .link:hover {
-        text-decoration: underline;
+    .btn-submit:hover {
+        background: #22c55e;
     }
 
-/* ================================
-   RESPONSIVE
-================================ */
-@media (max-width: 520px) {
-    .card {
-        width: 100%;
-        padding: 30px 20px;
-    }
-
-        .card h1 {
-            font-size: 22px;
-        }
-}
 
 /* ================================
    Cargas.cshtml
